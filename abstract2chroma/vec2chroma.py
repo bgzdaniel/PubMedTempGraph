@@ -32,6 +32,10 @@ inserted_rows = 0
 start_insertion = time()
 for row in reader:
     id = row["doc"]  # set id as the document itself, not important
+    try:
+        year = int(row["year"])
+    except ValueError:
+        continue
 
     if id in id_lookup:
         duplicate_docs += 1
@@ -42,7 +46,7 @@ for row in reader:
     ids.append(id)
     batch.append(row["doc"])
     embeddings.append(ast.literal_eval(row["embedding"]))
-    metadatas.append({"year": int(row["year"])})
+    metadatas.append({"year": year})
 
     if len(batch) >= batch_size:
         start = time()
