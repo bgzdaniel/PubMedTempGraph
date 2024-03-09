@@ -15,6 +15,9 @@ def extract_data(extract_params) -> pd.DataFrame:
         pandas dataframe containing the crawled details (abstracts, kewords etc.) of all articles matching the query including.
     """
 
+    print(f"start_date: {extract_params['start_date']}")
+    print(f"end_date: {extract_params['end_date']}")
+
     title_list = []
     authors_list = []
     abstract_list = []

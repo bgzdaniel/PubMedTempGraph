@@ -4,7 +4,7 @@ def get_text2date_prompt():
     prompt = """
     Your goal is to accurately extract the list of years explicitly and implicitly mentioned in the user's input. 
     The expected output should be a list of years, capturing both single years and year ranges. If the input contains no year output ['NA'].
-    The minimum year is 2013 and the max year is 2023.
+    The minimum year is 2014 and the max year is 2024.
     
     Examples:  
     Input: 'Who was CEO at BMW from 1998 to 2003 when the company experienced significant growth?'
@@ -26,7 +26,7 @@ def get_text2date_prompt():
     Output: [2019, 2020, 2021, 2022]
 
     Input: 'What research was published on Covid since 2018?'
-    Output: [2018, 2019, 2020, 2021, 2022, 2023]
+    Output: [2018, 2019, 2020, 2021, 2022, 2023, 2024]
     
     Input: 'Examine breakthroughs in medical research between 2010 and 2015.'
     Output: [2010, 2011, 2012, 2013, 2014, 2015]
