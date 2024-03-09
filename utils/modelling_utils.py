@@ -100,7 +100,7 @@ def get_answer(
         for year in date_range:
             filter = {
                 "year": {
-                    "$eq": str(year) # TODO: change to int after rerunning vec2chroma
+                    "$eq": year
                 }
             }
             filters.append(filter)
