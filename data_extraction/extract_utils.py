@@ -14,7 +14,11 @@ def search(query, mindate, maxdate):
         Dictionary with the following keys: 'Count', 'RetMax', 'RetStart', 'IdList', 'TranslationSet', 'QueryTranslation'
     """
     #docs: https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
-    Entrez.email = f'emails@examples{random.randint(1, 200)}.com' #creates random email suffixes for every batch
+    nums = []
+    for _ in range(15):
+        nums.append(str(random.randint(0, 9)))
+    num = "".join(nums)
+    Entrez.email = f'emails@examples{num}.com'
     handle = Entrez.esearch(db='pubmed',
                             sort='relevance',
                             retmax='10000',
