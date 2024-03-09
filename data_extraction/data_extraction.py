@@ -57,7 +57,7 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
-start_date = '2010/01/01'
+start_date = '2014/01/01'
 end_date = '2024/01/01'
 extract_params = {"window_duration_days": 30,
   "start_date": start_date,
