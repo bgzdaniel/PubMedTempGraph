@@ -1,6 +1,7 @@
 from Bio import Entrez
 from datetime import datetime, timedelta
 import io
+import random
 
 def search(query, mindate, maxdate):
     """
@@ -13,7 +14,7 @@ def search(query, mindate, maxdate):
         Dictionary with the following keys: 'Count', 'RetMax', 'RetStart', 'IdList', 'TranslationSet', 'QueryTranslation'
     """
     #docs: https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
-    Entrez.email = 'emails@examples.com'
+    Entrez.email = f'emails@examples{random.randint(1, 200)}.com' #creates random email suffixes for every batch
     handle = Entrez.esearch(db='pubmed',
                             sort='relevance',
                             retmax='10000',
@@ -34,6 +35,7 @@ def fetch_details(id_list) -> dict:
         nested Dictionary containing the detailed data (in XML)
     """
     ids = ','.join(id_list)
+
     Entrez.email = 'emails@examples2.com'
     handle = Entrez.efetch(db='pubmed',
                            retmode='xml',
