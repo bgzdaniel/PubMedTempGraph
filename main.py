@@ -8,7 +8,6 @@ from utils.modelling_utils import init_llm
 from utils.stdout_utils import StdoutSwitch
 from utils.prompt_utils import get_research_prompt, get_overview_prompt, get_text2date_prompt
 from spellchecker import SpellChecker
-import spacy
 
 def main():
     params = {
@@ -40,11 +39,10 @@ def chat(params):
         template=get_research_prompt(),
         input_variables=["context", "question"]
     )
-    research_chain = LLMChain(prompt=chat_prompt, llm=llm)
+    research_chain = LLMChain(prompt=research_prompt, llm=llm)
 
     vectordb_path = "data/chroma_store"
     vectordb = get_langchain_chroma(device=device, persist_dir=vectordb_path)
-    nlp = spacy.load('en_core_web_sm')
     print("print user information") # TODO: add user information
 
     while True:
