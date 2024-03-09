@@ -64,4 +64,4 @@ extract_params = {
     "end_date": '2024/03/01'
 }
 studies = extract_data(extract_params)
-studies.to_csv("../data/studies.csv", encoding="utf-8", index=False)
+studies.to_csv("data/studies.csv", encoding="utf-8", index=False)
