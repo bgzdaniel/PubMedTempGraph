@@ -13,7 +13,7 @@ def get_text2date_prompt():
     Input: 'Cancer 2011-2023'
     Output: [2011, 2012, 2013, 2014, 2ß15, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
     
-    Input: 'What research was published on Dysarthria in 2010 and 2015?
+    Input: 'What research was published on Dysarthria in 2010 and 2015'?
     Output: [2010, 2015]
     
     Input: 'Was there a major terrorist attack in 2009?'
@@ -39,20 +39,22 @@ def get_text2date_prompt():
     Ensure your output follows this format "[year_x, year_y, .., year_z]".
     
     User Input: {question}
-    Your Output:
-    """
+    Your Output: """
     return prompt
 
 def get_overview_prompt():
     prompt = """
+    Consider the following published papers from PubMed: '{context}'
+
     Take the provided published papers from PubMed and summarize the abstracts into one summary. 
-    Start the summary with the year of the papers. All provided papers will be from the same year. 
+    Start the summary with the year of the papers followed by a colon. 
+    All provided papers will be from the same year. 
     Keep your summary to three sentences at maximum. Do NOT exceed the max sentence amount. 
     Do not reference the authors in your summary. Mention the first authors at the end of the summary.
+    Do not use any newlines in your summary.
     Remember to summarize all papers into only one summary!
-    Here are the published papers: '{context}' 
-    Your output: 
-    """
+
+    Your output: """
     return prompt
 
 def get_research_prompt():
@@ -72,8 +74,5 @@ def get_research_prompt():
     
     Use the following articles to determine the answer: {context}
     The question: {question}
-    Your answer:
-'''
-
-    """
+    Your answer: """
     return prompt
