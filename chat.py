@@ -15,7 +15,7 @@ def chat(vectordb, chains, params):
         if question == "exit":
             break
         question = spellcheck_question(question)
-        mode = input("Get an overview or get latest research? Type 'overview' or 'research': ")
+        mode = input("Get an overview or get latest research? Type 'overview' or 'research': ", end="\n\n")
         get_answer(question, mode, vectordb, chains, params)
 
 if __name__ == '__main__':
