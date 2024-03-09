@@ -20,7 +20,9 @@ def eval(vectordb, chains, params, scorer: Scorer):
         answer = get_answer(question, mode, vectordb, chains, params)
         answers.append(answer)
 
-    # TODO: evaluate on question types
+    # TODO: evaluate on question types, see
+    # https://github.com/KennyLoRI/pubMedNLP/blob/main/kedronlp/scripts/evaluation/valid_and_eval.py#L218-L261
+    # for example
 
 if __name__ == '__main__':
     main()
