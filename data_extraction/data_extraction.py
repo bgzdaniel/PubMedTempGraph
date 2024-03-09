@@ -24,7 +24,7 @@ def extract_data(extract_params) -> pd.DataFrame:
     pubdate_year_list = []
 
     studiesIdList = get_article_IDs(extract_params) #calls IDs of the articles to fetch detailed data for
-    chunk_size = 250  # reduce chunksize to not exceed request limits
+    chunk_size = extract_params['chunk_size']  # reduce chunksize to not exceed request limits
     for chunk_i in tqdm(range(0, len(studiesIdList), chunk_size)):
         chunk = studiesIdList[chunk_i:chunk_i + chunk_size]
         papers = fetch_details(chunk)
@@ -57,8 +57,11 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
-extract_params = {"window_duration_days": 10,
-  "start_date": '2018/01/01',
-  "end_date": '2018/01/15'}
+extract_params = {
+    "window_duration_days": 7,
+    "chunk_size": 100,
+    "start_date": '2014/01/01',
+    "end_date": '2024/03/01'
+}
 studies = extract_data(extract_params)
 studies.to_csv("../data/studies.csv", encoding="utf-8", index=False)
