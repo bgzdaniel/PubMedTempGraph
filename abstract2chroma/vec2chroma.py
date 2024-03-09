@@ -20,7 +20,6 @@ input_csv = open("data/embeddings.csv", encoding="utf-8")
 
 reader = csv.DictReader(input_csv)
 
-id_lookup = set()
 duplicate_docs = 0
 ids = []
 embeddings = []
@@ -32,16 +31,7 @@ inserted_rows = 0
 start_insertion = time()
 for row in reader:
     id = row["doc"]  # set id as the document itself, not important
-    try:
-        year = int(row["year"])
-    except ValueError:
-        continue
-
-    if id in id_lookup:
-        duplicate_docs += 1
-        continue
-
-    id_lookup.add(id)
+    year = int(row["year"])
 
     ids.append(id)
     batch.append(row["doc"])
@@ -81,5 +71,4 @@ input_csv.close()
 
 print("done!")
 print(f"inserted in total {inserted_rows} docs")
-print(f"found {duplicate_docs} duplicate docs")
 print(f"insertion duration: {(end_insertion - start_insertion)/60:.2f}min")

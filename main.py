@@ -14,14 +14,15 @@ def main():
         "top_k": 3,
         # ...
     }
-    chat(params)
-
-def chat(params):
-    stdout = StdoutSwitch()
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     llm = init_llm()
+    vectordb_path = "data/chroma_store"
+    vectordb = get_langchain_chroma(device=device, persist_dir=vectordb_path)
+
+    chat(llm, vectordb, params)
+
+def chat(llm, vectordb, params):
+    stdout = StdoutSwitch()
     
     text2date_prompt = PromptTemplate(
         template=get_text2date_prompt(),
@@ -41,8 +42,6 @@ def chat(params):
     )
     research_chain = LLMChain(prompt=research_prompt, llm=llm)
 
-    vectordb_path = "data/chroma_store"
-    vectordb = get_langchain_chroma(device=device, persist_dir=vectordb_path)
     print("print user information") # TODO: add user information
 
     while True:

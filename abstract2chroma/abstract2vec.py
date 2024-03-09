@@ -19,23 +19,36 @@ output_csv = open("data/embeddings.csv", "w", encoding="utf-8")
 writer = csv.DictWriter(output_csv, fieldnames=["year", "doc", "embedding"])
 writer.writeheader()
 
-doc_lookup = set()
+abstract_lookup = set()
 doc_batch = []
 year_batch = []
 batch_size = 128 + 64 + 32 # 10GB CUDA MEM is max, use all 10GB for optimal utilization
 total_docs_processed = 0
 duplicates = 0
+abstracts_missing = 0
+invalid_years = 0
 start = time()
 for row in reader:
     row = preprocess_row(row)
-    doc = get_combined_doc(row)
-    year = row["Year"]
 
-    if doc in doc_lookup:
+    try:
+        year = int(row["Year"])
+    except ValueError:
+        invalid_years += 1
+        continue
+
+    if row["Abstract"] == "NA":
+        abstracts_missing += 1
+        continue
+
+    if row["Abstract"] in abstract_lookup:
         duplicates += 1
         continue
 
-    doc_lookup.add(doc)
+    abstract_lookup.add(row["Abstract"])
+
+    doc = get_combined_doc(row)
+
     doc_batch.append(doc)
     year_batch.append(year)
 
@@ -65,3 +78,5 @@ if doc_batch:
 end = time()
 print(f"done!\nembedded in total {total_docs_processed} docs\ntotal time: {(end-start)/60:.2f}min")
 print(f"found {duplicates} duplicate docs")
+print(f"found {abstracts_missing} missing abstracts")
+print(f"found {invalid_years} years not possible to cast into int")
