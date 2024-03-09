@@ -15,6 +15,9 @@ def extract_data(extract_params) -> pd.DataFrame:
         pandas dataframe containing the crawled details (abstracts, kewords etc.) of all articles matching the query including.
     """
 
+    print(f"start_date: {extract_params["start_date"]}")
+    print(f"end_date: {extract_params["end_date"]}")
+
     title_list = []
     authors_list = []
     abstract_list = []
@@ -54,8 +57,10 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
+start_date = '2010/01/01'
+end_date = '2024/01/01'
 extract_params = {"window_duration_days": 30,
-  "start_date": '2013/01/01',
-  "end_date": '2014/01/01'}
+  "start_date": start_date,
+  "end_date": end_date}
 studies = extract_data(extract_params)
 studies.to_csv("data/studies.csv", encoding="utf-8", index=False)
