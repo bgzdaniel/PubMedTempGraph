@@ -1,14 +1,18 @@
+import torch
 from utils.modelling_utils import init, get_answer
+from utils.score_utils import Scorer
 
 def main():
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     params = {
         "top_k": 3,
         # ...
     }
-    vectordb, chains = init()
-    eval(vectordb, chains, params)
+    vectordb, chains = init(device)
+    scorer = Scorer(device=device)
+    eval(vectordb, chains, params, scorer)
 
-def eval(vectordb, chains, params):
+def eval(vectordb, chains, params, scorer: Scorer):
     questions = None # TODO: get questions from csv
     answers = []
     for question in questions:

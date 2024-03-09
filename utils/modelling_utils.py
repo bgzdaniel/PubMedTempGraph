@@ -1,4 +1,3 @@
-import torch
 from langchain_community.llms import LlamaCpp
 from langchain_community.vectorstores.chroma import Chroma
 from langchain.callbacks.manager import CallbackManager
@@ -41,10 +40,7 @@ def init_llm(
     return llm
 
 
-def init():
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('Using device:', device)
-    print()
+def init(device):
     llm = init_llm()
     vectordb_path = "data/chroma_store"
     vectordb = get_langchain_chroma(device=device, persist_dir=vectordb_path)

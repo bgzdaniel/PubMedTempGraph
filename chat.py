@@ -1,11 +1,13 @@
+import torch
 from utils.modelling_utils import init, spellcheck_question, get_answer
 
 def main():
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     params = {
         "top_k": 3,
         # ...
     }
-    vectordb, chains = init()
+    vectordb, chains = init(device)
     chat(vectordb, chains, params)
 
 def chat(vectordb, chains, params):
