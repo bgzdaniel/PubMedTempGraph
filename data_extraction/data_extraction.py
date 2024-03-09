@@ -1,4 +1,4 @@
-from data_extraction.extract_utils import fetch_details, get_article_IDs
+from extract_utils import fetch_details, get_article_IDs
 import pandas as pd
 from tqdm import tqdm
 
@@ -21,7 +21,7 @@ def extract_data(extract_params) -> pd.DataFrame:
     pubdate_year_list = []
 
     studiesIdList = get_article_IDs(extract_params) #calls IDs of the articles to fetch detailed data for
-    chunk_size = 500  # reduce chunksize to not exceed request limits
+    chunk_size = 250  # reduce chunksize to not exceed request limits
     for chunk_i in tqdm(range(0, len(studiesIdList), chunk_size)):
         chunk = studiesIdList[chunk_i:chunk_i + chunk_size]
         papers = fetch_details(chunk)
@@ -54,8 +54,8 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
-extract_params = {"window_duration_days": 30,
-  "start_date": '2013/01/01',
-  "end_date": '2014/01/01'}
+extract_params = {"window_duration_days": 10,
+  "start_date": '2018/01/01',
+  "end_date": '2018/01/15'}
 studies = extract_data(extract_params)
-studies.to_csv("data/studies.csv", encoding="utf-8", index=False)
+studies.to_csv("../data/studies.csv", encoding="utf-8", index=False)
