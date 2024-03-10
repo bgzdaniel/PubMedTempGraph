@@ -18,7 +18,7 @@ def search(query, mindate, maxdate):
     for _ in range(15):
         nums.append(str(random.randint(0, 9)))
     num = "".join(nums)
-    Entrez.email = f'emails@examples{num}.com'
+    Entrez.email = f'dbks{num}@emailaddress.com'
     handle = Entrez.esearch(db='pubmed',
                             sort='relevance',
                             retmax='10000',

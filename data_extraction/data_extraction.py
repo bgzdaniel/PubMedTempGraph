@@ -28,7 +28,9 @@ def extract_data(extract_params) -> pd.DataFrame:
     for chunk_i in tqdm(range(0, len(studiesIdList), chunk_size)):
         chunk = studiesIdList[chunk_i:chunk_i + chunk_size]
         papers = fetch_details(chunk)
-        for i, paper in enumerate(papers['PubmedArticle']):
+        if papers is None:
+            continue
+        for _, paper in enumerate(papers['PubmedArticle']):
             title_list.append(paper['MedlineCitation']['Article']['ArticleTitle'])
             try:
                 abstract_list.append(paper['MedlineCitation']['Article']['Abstract']['AbstractText'][0])
@@ -36,7 +38,7 @@ def extract_data(extract_params) -> pd.DataFrame:
                 abstract_list.append('NA')
             try:
                 authors_list.append([", ".join([author.get('LastName'), author.get('ForeName')]) for author in
-                                     paper['MedlineCitation']['Article']['AuthorList']])
+                                    paper['MedlineCitation']['Article']['AuthorList']])
             except:
                 authors_list.append('NA')
             try:
@@ -57,11 +59,12 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
-extract_params = {
-    "window_duration_days": 7,
-    "chunk_size": 100,
-    "start_date": '2014/01/01',
-    "end_date": '2024/03/01'
-}
-studies = extract_data(extract_params)
-studies.to_csv("data/studies.csv", encoding="utf-8", index=False)
+for year in range(2014, 2025):
+    extract_params = {
+        "window_duration_days": 7,
+        "chunk_size": 100,
+        "start_date": f'{year}/01/01',
+        "end_date": f'{year}/12/31'
+    }
+    studies = extract_data(extract_params)
+    studies.to_csv(f"data/studies_{year}.csv", encoding="utf-8", index=False)
