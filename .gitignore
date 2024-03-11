@@ -1,3 +1,5 @@
 .idea
 __pycache__
-data/*
+*.csv
+chroma_store
+mistral-7b-instruct-*.gguf

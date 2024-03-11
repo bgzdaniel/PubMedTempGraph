@@ -67,4 +67,4 @@ for year in range(2014, 2025):
         "end_date": f'{year}/12/31'
     }
     studies = extract_data(extract_params)
-    studies.to_csv(f"data/studies_{year}.csv", encoding="utf-8", index=False)
+    studies.to_csv(f"data/studies/studies_{year}.csv", encoding="utf-8", index=False)
