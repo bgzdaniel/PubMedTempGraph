@@ -21,7 +21,7 @@ start = time()
 
 for year in range(2014, 2025):
     with open(f"data/studies/studies_{year}.csv", encoding="utf-8") as input_csv, \
-        open(f"data/embeddings_{year}.csv", "w", encoding="utf-8") as output_csv:
+        open(f"data/embeddings/embeddings_{year}.csv", "w", encoding="utf-8") as output_csv:
         reader = csv.DictReader(input_csv)
         writer = csv.DictWriter(output_csv, fieldnames=["year", "doc", "embedding"])
         writer.writeheader()

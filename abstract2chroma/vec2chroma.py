@@ -16,10 +16,6 @@ collection = client.create_collection(
     metadata={"hnsw:space": "cosine"},
 )
 
-input_csv = open("data/embeddings.csv", encoding="utf-8")
-
-reader = csv.DictReader(input_csv)
-
 duplicate_docs = 0
 ids = []
 embeddings = []
@@ -29,45 +25,47 @@ batch_size = 500
 inserted_rows = 0
 
 start_insertion = time()
-for row in reader:
-    id = row["doc"]  # set id as the document itself, not important
-    year = int(row["year"])
+for year in range(2014, 2025):
+    with open(f"data/embeddings/embeddings_{year}.csv", encoding="utf-8") as input_csv:
+        reader = csv.DictReader(input_csv)
+        for row in reader:
+            id = row["doc"]  # set id as the document itself, not important
+            year = int(row["year"])
 
-    ids.append(id)
-    batch.append(row["doc"])
-    embeddings.append(ast.literal_eval(row["embedding"]))
-    metadatas.append({"year": year})
+            ids.append(id)
+            batch.append(row["doc"])
+            embeddings.append(ast.literal_eval(row["embedding"]))
+            metadatas.append({"year": year})
 
-    if len(batch) >= batch_size:
-        start = time()
-        collection.upsert(
-            ids=ids,
-            documents=batch,
-            embeddings=embeddings,
-            metadatas=metadatas,
-        )
-        inserted_rows += len(batch)
-        print(f"docs inserted: {inserted_rows}")
-        batch = []
-        ids = []
-        embeddings = []
-        metadatas = []
+            if len(batch) >= batch_size:
+                start = time()
+                collection.upsert(
+                    ids=ids,
+                    documents=batch,
+                    embeddings=embeddings,
+                    metadatas=metadatas,
+                )
+                inserted_rows += len(batch)
+                print(f"docs inserted: {inserted_rows}")
+                batch = []
+                ids = []
+                embeddings = []
+                metadatas = []
 
-if batch:
-    collection.upsert(
-        ids=ids,
-        documents=batch,
-        embeddings=embeddings,
-        metadatas=metadatas,
-    )
-    inserted_rows += len(batch)
-    batch = []
-    ids = []
-    embeddings = []
-    metadatas = []
+        if batch:
+            collection.upsert(
+                ids=ids,
+                documents=batch,
+                embeddings=embeddings,
+                metadatas=metadatas,
+            )
+            inserted_rows += len(batch)
+            batch = []
+            ids = []
+            embeddings = []
+            metadatas = []
 
 end_insertion = time()
-input_csv.close()
 
 print("done!")
 print(f"inserted in total {inserted_rows} docs")
