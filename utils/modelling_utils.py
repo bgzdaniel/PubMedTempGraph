@@ -117,7 +117,8 @@ def get_answer(
         if mode == "overview":
             stdout.off()
             answer.append(overview_chain.invoke({
-                "context": context,       
+                "context": context,
+                "question": question,
             })["text"].strip())
             stdout.on()
             print(answer[-1])
