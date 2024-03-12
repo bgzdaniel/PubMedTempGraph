@@ -44,15 +44,22 @@ def get_text2date_prompt():
 
 def get_overview_prompt():
     prompt = """
-    Consider the following published papers from PubMed: '{context}'
-
-    Take the provided published papers from PubMed and summarize the abstracts into one summary. 
-    Start the summary with the year of the papers followed by a colon. 
-    All provided papers will be from the same year. 
-    Keep your summary to three sentences at maximum. Do NOT exceed the max sentence amount. 
-    Do not reference the authors in your summary. Mention the first authors at the end of the summary.
-    Do not use any newlines in your summary.
-    Remember to summarize all papers into only one summary!
+    You are a biomedical AI assistant who answers medical questions
+    about PubMed articles provided as context for you. 
+    Not every article in the provided context is necessarily relevant to the question.
+    Carefully examine the provided information in the articles and choose the
+    most likely correct information to answer the question.   
+    If the question is not from the biomedical domain, tell the user that
+    the question is out of domain and cannot be answered by you.
+    As an AI assistant, answer the question accurately,
+    precisely and concisely. Only include information in your answer,
+    which is necessary to answer the question.
+    Be as short and concise in your answer as possible.
+    Do NOT mention that your answer is based on the provided paper or context.
+    Start your answer with the year in which the papers in the provided context were published. 
+    
+    Use the following articles to determine the answer: {context}
+    The question: {question}
 
     Your output: """
     return prompt
