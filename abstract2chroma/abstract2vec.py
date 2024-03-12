@@ -9,10 +9,6 @@ increase_csv_maxsize()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = PubMedBert(device=device)
 
-output_csv = open("data/embeddings.csv", "w", encoding="utf-8")
-writer = csv.DictWriter(output_csv, fieldnames=["year", "doc", "embedding"])
-writer.writeheader()
-
 abstract_lookup = set()
 doc_batch = []
 year_batch = []
@@ -24,8 +20,11 @@ invalid_years = 0
 start = time()
 
 for year in range(2014, 2025):
-    with open(f"data/studies/studies_{year}.csv", encoding="utf-8") as input_csv:
+    with open(f"data/studies/studies_{year}.csv", encoding="utf-8") as input_csv, \
+        open(f"data/embeddings_{year}.csv", "w", encoding="utf-8") as output_csv:
         reader = csv.DictReader(input_csv)
+        writer = csv.DictWriter(output_csv, fieldnames=["year", "doc", "embedding"])
+        writer.writeheader()
         for row in reader:
             row = preprocess_row(row)
 
@@ -58,7 +57,7 @@ for year in range(2014, 2025):
                     rows_to_write.append(row)
                 writer.writerows(rows_to_write)
                 total_docs_processed += batch_size
-                print(f"Embedded {total_docs_processed} docs")
+                print(f"embedded {total_docs_processed} docs")
                 year_batch = []
                 doc_batch = []
 
