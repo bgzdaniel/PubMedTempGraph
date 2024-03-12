@@ -113,30 +113,20 @@ Note: Running the system for the first time might take some additional seconds b
    Also make sure that CMake is installed on your system.
 
 ### Optional usage possibilities 
-1. **Visualize the pipeline:**
-   - Use built-in features from Kedro to get an overview of the pipeline in your browser
-   ```bash
-   kedro viz
-   ```
-2. **Test the preprocessing pipeline:**
-   - Note: This is not advised since it may take a long time to extract the abstracts from PubMed and embed them (+ the PubMed API is not altogether stable):
-  ```bash
-  kedro run --pipeline=data_processing
-  ```
 
-4. **Embedding of abstracts or paragraphs:**
+1. **Embedding of abstracts or paragraphs:**
    - For embedding abstracts the file `extract_data.csv` is required. Place it in `TODO Location`. See [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) for the data. Go to `TODO location`.
    ```bash
    TODO run Embedding generation
    ```
    
-5. **Loading embeddings to the vector database ChromaDB:**
+2. **Loading embeddings to the vector database ChromaDB:**
    - For loading abstract-based embeddings to the vector database, the file `abstract_metadata_embeddings.csv` is required. Place it in `TODO location`. See [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) for the data. Go to `TODO Location.
    ```bash
    TODO upload command
    ```
    
-6. **Running Validation and Evaluation:**
+5. **Running Validation and Evaluation:**
    - For the evaluation, BleuRT is required. First clone bleuRT:
    ```bash
    git clone https://github.com/google-research/bleurt.git
@@ -164,6 +154,7 @@ Note: Running the system for the first time might take some additional seconds b
    
    - Download the abstract based ChromaDB store (folder called `chroma_store_abstracts`) from [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG). 
    Go to `TODO location evaluation script`.
+   - Download the evaluation dataset [here](https://docs.google.com/spreadsheets/d/1XNnEeRMMBvswtjh8lZZqHDCwwQEAvt7tEV8BbQ4CK60/edit?usp=sharing)
 
    ```bash
    python TODO run evaluation
