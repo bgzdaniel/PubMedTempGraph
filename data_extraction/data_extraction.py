@@ -1,6 +1,11 @@
 from data_extraction.extract_utils import fetch_details, get_article_IDs
 import pandas as pd
 from tqdm import tqdm
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--year", required=True, type=int)
+args = parser.parse_args()
 
 def extract_data(extract_params) -> pd.DataFrame:
     """
@@ -59,12 +64,11 @@ def extract_data(extract_params) -> pd.DataFrame:
     print("Data extraction finished")
     return df
 
-for year in range(2014, 2025):
-    extract_params = {
-        "window_duration_days": 7,
-        "chunk_size": 100,
-        "start_date": f'{year}/01/01',
-        "end_date": f'{year}/12/31'
-    }
-    studies = extract_data(extract_params)
-    studies.to_csv(f"data/studies/studies_{year}.csv", encoding="utf-8", index=False)
+extract_params = {
+    "window_duration_days": 7,
+    "chunk_size": 100,
+    "start_date": f'{args.year}/01/01',
+    "end_date": f'{args.year}/12/31',
+}
+studies = extract_data(extract_params)
+studies.to_csv(f"data/studies/studies_{args.year}.csv", encoding="utf-8", index=False)
