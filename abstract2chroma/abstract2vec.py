@@ -12,7 +12,7 @@ model = PubMedBert(device=device)
 abstract_lookup = set()
 doc_batch = []
 year_batch = []
-batch_size = 128 + 64 + 32 # 10GB CUDA MEM is max, use all 10GB for optimal utilization
+batch_size = 128
 total_docs_processed = 0
 duplicates = 0
 abstracts_missing = 0
