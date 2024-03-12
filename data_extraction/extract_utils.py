@@ -46,12 +46,22 @@ def fetch_details(id_list) -> dict:
     """
     ids = ','.join(id_list)
 
-    Entrez.email = 'emails@examples2.com'
-    handle = Entrez.efetch(db='pubmed',
-                           retmode='xml',
-                           id=ids)
+    while True:
+        try:
+            nums = []
+            for _ in range(20):
+                nums.append(str(random.randint(0, 9)))
+            num = "".join(nums)
+            Entrez.email = f'ksdb{num}@emailaddress.com'
+            handle = Entrez.efetch(db='pubmed',
+                                retmode='xml',
+                                id=ids)
+            break
+        except urllib.error.HTTPError:
+            pass
+
     results = None
-    max_retries = 3
+    max_retries = 10
     for attempt in range(max_retries):
         try:
             xml_data = handle.read()
