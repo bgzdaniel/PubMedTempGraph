@@ -1,8 +1,6 @@
 import evaluate
 from bleurt import score
 import numpy as np
-from utils.modelling_utils import init, get_answer
-
 
 class Scorer:
     def __init__(self, device):
@@ -10,7 +8,7 @@ class Scorer:
         self.bleu = evaluate.load("bleu")
         self.rouge = evaluate.load("rouge")
         self.bertscore = evaluate.load("bertscore")
-        checkpoint = "BLEURT-20-D12"
+        checkpoint = "data/BLEURT-20-D12"
         self.bleurt = score.BleurtScorer(checkpoint)
 
         # init bertscore with sample computation
