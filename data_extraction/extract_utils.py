@@ -2,6 +2,7 @@ from Bio import Entrez
 from datetime import datetime, timedelta
 import io
 import random
+import urllib
 
 def search(query, mindate, maxdate):
     """
@@ -14,19 +15,24 @@ def search(query, mindate, maxdate):
         Dictionary with the following keys: 'Count', 'RetMax', 'RetStart', 'IdList', 'TranslationSet', 'QueryTranslation'
     """
     #docs: https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch
-    nums = []
-    for _ in range(15):
-        nums.append(str(random.randint(0, 9)))
-    num = "".join(nums)
-    Entrez.email = f'ksdb{num}@emailaddress.com'
-    handle = Entrez.esearch(db='pubmed',
-                            sort='relevance',
-                            retmax='10000',
-                            retmode='xml',
-                            term=query,
-                            mindate=mindate,
-                            maxdate=maxdate)
-    results = Entrez.read(handle)
+    while True:
+        try:
+            nums = []
+            for _ in range(20):
+                nums.append(str(random.randint(0, 9)))
+            num = "".join(nums)
+            Entrez.email = f'ksdb{num}@emailaddress.com'
+            handle = Entrez.esearch(db='pubmed',
+                                    sort='relevance',
+                                    retmax='10000',
+                                    retmode='xml',
+                                    term=query,
+                                    mindate=mindate,
+                                    maxdate=maxdate)
+            results = Entrez.read(handle)
+            break
+        except urllib.error.HTTPError:
+            pass
     return results
 
 def fetch_details(id_list) -> dict:
