@@ -30,10 +30,6 @@ else:
         name="pubmed_embeddings",
         embedding_function=None,
     )
-    for year in years: # avoid duplicates if possible
-        collection.delete(
-            where={"year": year}
-        )
 
 duplicate_docs = 0
 ids = []
@@ -42,6 +38,7 @@ documents = []
 metadatas = []
 batch_size = 5000
 inserted_rows = 0
+
 
 def upsert_with_duplicates(collection, ids, documents, embeddings, metadatas):
     for id, document, embedding, metadata in zip(ids, documents, embeddings, metadatas):
@@ -56,16 +53,18 @@ def upsert_with_duplicates(collection, ids, documents, embeddings, metadatas):
             duplicate_docs += 1
             continue
 
+
 def upsert(collection, ids, documents, embeddings, metadatas):
     try:
         collection.upsert(
-                ids=ids,
-                documents=documents,
-                embeddings=embeddings,
-                metadatas=metadatas,
-            )
+            ids=ids,
+            documents=documents,
+            embeddings=embeddings,
+            metadatas=metadatas,
+        )
     except chromadb.errors.DuplicateIDError:
         upsert_with_duplicates(collection, ids, documents, embeddings, metadatas)
+
 
 start_insertion = time()
 for year in tqdm(years):

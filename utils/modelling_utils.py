@@ -101,7 +101,7 @@ def get_answer(
             }
             filters.append(filter)
     elif mode == "research":
-        date_range = [2023, 2022, 2021, 2020, 2019] # last 5 years
+        date_range = [2024, 2023, 2022, 2021, 2020, 2019] # last 6 years
         filter = {
             "year": {
                 "$in": date_range
