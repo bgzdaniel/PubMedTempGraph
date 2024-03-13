@@ -75,7 +75,7 @@ If anything goes wrong in this step, please contact [Daniel Bogacz](mailto:danie
 
 ## Usage
 ### Using the Q&A system
-1. **Navigate to the kedronlp folder in your terminal:**
+1. **Navigate to the `TODO: insert folder name` folder folder in your terminal:**
    ```bash
    cd TODO location
    ```
@@ -150,7 +150,7 @@ Note: Running the system for the first time might take some additional seconds b
    pip install . 
    ```
 
-   The used BleuRT model can be found [here](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20-D12.zip). Place it under `pubMedNLP/kedronlp/scripts/evaluation`.
+   The used BleuRT model can be found [here](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20-D12.zip). Place it under `TODO input path`.
    
    - Download the abstract based ChromaDB store (folder called `chroma_store_abstracts`) from [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG). 
    Go to `TODO location evaluation script`.
