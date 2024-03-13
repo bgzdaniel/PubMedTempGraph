@@ -30,7 +30,10 @@ with open(f"data/studies/studies_{args.year}.csv", encoding="utf-8") as input_cs
     writer = csv.DictWriter(output_csv, fieldnames=["year", "doc", "embedding"])
     writer.writeheader()
     for row in reader:
-        row = preprocess_row(row)
+        try:
+            row = preprocess_row(row)
+        except ValueError:
+            continue
 
         try:
             year = int(row["Year"])
