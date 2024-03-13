@@ -5,6 +5,7 @@ from time import time
 from tqdm import tqdm
 import argparse
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--years", required=True, type=str)
 parser.add_argument("--create_new", action="store_true")
@@ -30,10 +31,33 @@ else:
         embedding_function=None,
     )
 
+def upsert_with_duplicates(collection, ids, documents, embeddings, metadatas):
+    for id, document, embedding, metadata in zip(ids, documents, embeddings, metadatas):
+        try:
+            collection.upsert(
+                ids=[id],
+                documents=[document],
+                embeddings=[embedding],
+                metadatas=[metadata],
+            )
+        except chromadb.errors.DuplicateIDError:
+            continue
+
+def upsert(collection, ids, documents, embeddings, metadatas):
+    try:
+        collection.upsert(
+                ids=ids,
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=metadatas,
+            )
+    except chromadb.errors.DuplicateIDError:
+        upsert_with_duplicates(collection, ids, documents, embeddings, metadatas)
+
 duplicate_docs = 0
 ids = []
 embeddings = []
-batch = []
+documents = []
 metadatas = []
 batch_size = 5000
 inserted_rows = 0
@@ -49,34 +73,35 @@ for year in tqdm(years):
             year = int(row["year"])
 
             ids.append(id)
-            batch.append(doc)
+            documents.append(doc)
             embeddings.append(embedding)
             metadatas.append({"year": year})
 
-            if len(batch) >= batch_size:
+            if len(documents) >= batch_size:
                 start = time()
-                collection.upsert(
+                upsert(
+                    collection=collection,
                     ids=ids,
-                    documents=batch,
+                    documents=documents,
                     embeddings=embeddings,
                     metadatas=metadatas,
                 )
-                inserted_rows += len(batch)
-                #print(f"docs inserted: {inserted_rows}")
-                batch = []
+                inserted_rows += len(documents)
+                documents = []
                 ids = []
                 embeddings = []
                 metadatas = []
 
-        if batch:
-            collection.upsert(
+        if documents:
+            upsert(
+                collection=collection,
                 ids=ids,
-                documents=batch,
+                documents=documents,
                 embeddings=embeddings,
                 metadatas=metadatas,
             )
-            inserted_rows += len(batch)
-            batch = []
+            inserted_rows += len(documents)
+            documents = []
             ids = []
             embeddings = []
             metadatas = []
