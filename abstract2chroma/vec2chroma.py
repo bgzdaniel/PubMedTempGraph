@@ -2,30 +2,44 @@ import chromadb
 import csv
 import ast
 from time import time
+from tqdm import tqdm
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--years", required=True, type=str)
+parser.add_argument("--create_new", action="store_true")
+args = parser.parse_args()
+years = [int(year) for year in args.years.split(",")]
 
 client = chromadb.PersistentClient(path="data/chroma_store")
 
-try:
-    client.delete_collection(name="pubmed_embeddings")
-except ValueError:
-    pass
+if args.create_new:
+    try:
+        client.delete_collection(name="pubmed_embeddings")
+    except ValueError:
+        pass
 
-collection = client.create_collection(
-    name="pubmed_embeddings",
-    embedding_function=None,
-    metadata={"hnsw:space": "cosine"},
-)
+    collection = client.create_collection(
+        name="pubmed_embeddings",
+        embedding_function=None,
+        metadata={"hnsw:space": "cosine"},
+    )
+else:
+    collection = client.get_collection(
+        name="pubmed_embeddings",
+        embedding_function=None,
+    )
 
 duplicate_docs = 0
 ids = []
 embeddings = []
 batch = []
 metadatas = []
-batch_size = 500
+batch_size = 5000
 inserted_rows = 0
 
 start_insertion = time()
-for year in range(2014, 2025):
+for year in tqdm(years):
     with open(f"data/embeddings/embeddings_{year}.csv", encoding="utf-8") as input_csv:
         reader = csv.DictReader(input_csv)
         for row in reader:
@@ -46,7 +60,7 @@ for year in range(2014, 2025):
                     metadatas=metadatas,
                 )
                 inserted_rows += len(batch)
-                print(f"docs inserted: {inserted_rows}")
+                #print(f"docs inserted: {inserted_rows}")
                 batch = []
                 ids = []
                 embeddings = []

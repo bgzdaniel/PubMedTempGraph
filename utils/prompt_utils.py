@@ -44,24 +44,22 @@ def get_text2date_prompt():
 
 def get_overview_prompt():
     prompt = """
-    You are a biomedical AI assistant who answers medical questions
-    about PubMed articles provided as context for you. 
-    Not every article in the provided context is necessarily relevant to the question.
-    Carefully examine the provided information in the articles and choose the
-    most likely correct information to answer the question.   
-    If the question is not from the biomedical domain, tell the user that
-    the question is out of domain and cannot be answered by you.
-    As an AI assistant, answer the question accurately,
-    precisely and concisely. Only include information in your answer,
-    which is necessary to answer the question.
-    Be as short and concise in your answer as possible.
-    Do NOT mention that your answer is based on the provided paper or context.
-    Start your answer with the year in which the papers in the provided context were published. 
+    Consider the following published papers from PubMed: {context} 
     
-    Use the following articles to determine the answer: {context}
-    The question: {question}
+    All papers are from the same year.
+    Summarize the content of these papers.
+    With your summary be concise with one or two sentences.
+    Do NOT mention the papers in your summary.
 
-    Your output: """
+    Start your summary with the year of the provided papers and a colon,
+    for example '2018: ".
+
+    When doing the summary also consider the question '{question}'.
+    The mentioned years in the question are irrelevant.
+    Try to phrase you summary in a way that answers the provided question.
+    Remember to NOT consider the mentioned years in the question.
+
+    Your summary: """
     return prompt
 
 def get_research_prompt():

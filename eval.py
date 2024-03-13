@@ -3,14 +3,16 @@ import numpy as np
 from utils.modelling_utils import init, get_answer
 from utils.eval_utils import Scorer, weighted_score
 from langchain_community.vectorstores.chroma import Chroma
+import tensorflow as tf
 
 def main():
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
     params = {
         "top_k": 3,
         # ...
     }
     vectordb, chains = init(device)
+    tf.config.set_visible_devices([], 'GPU') # run BleuRT on CPU, save GPU memory
     scorer = Scorer(device=device)
     eval(vectordb, chains, params, scorer)
 

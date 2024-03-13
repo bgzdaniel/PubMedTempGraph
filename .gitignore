@@ -4,3 +4,5 @@ __pycache__
 chroma_store
 mistral-7b-instruct-*.gguf
 BLEURT-*
+.*
+bleurt

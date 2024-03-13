@@ -111,7 +111,7 @@ def get_answer(
     
     answer = []
     for filter in filters:
-        docs = vectordb.max_marginal_relevance_search(question, k=params["top_k"], filter=filter)
+        docs = vectordb.similarity_search(question, k=params["top_k"], filter=filter)
         docs = [doc.page_content for doc in docs]
         context = "\n\n".join(docs)
         if mode == "overview":
