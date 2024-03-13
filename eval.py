@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 from utils.modelling_utils import init, get_answer
 from utils.eval_utils import Scorer, weighted_score, get_overall_scores, output_scores
 from langchain_community.vectorstores.chroma import Chroma

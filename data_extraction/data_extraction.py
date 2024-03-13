@@ -1,4 +1,4 @@
-from data_extraction.extract_utils import fetch_details, get_article_IDs
+from utils.extract_utils import fetch_details, get_article_IDs
 import pandas as pd
 from tqdm import tqdm
 import argparse
