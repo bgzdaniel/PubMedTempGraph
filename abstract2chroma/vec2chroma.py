@@ -44,10 +44,6 @@ for year in tqdm(years):
         reader = csv.DictReader(input_csv)
         for row in reader:
             id = row["doc"]
-            start_id = id.find("Title: ") + len("Title: ")
-            id = id[start_id:]
-            end_id = id.find("\n")
-            id = id[:end_id]
             doc = row["doc"]
             embedding = ast.literal_eval(row["embedding"])
             year = int(row["year"])
