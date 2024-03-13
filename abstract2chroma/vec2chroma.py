@@ -43,12 +43,18 @@ for year in tqdm(years):
     with open(f"data/embeddings/embeddings_{year}.csv", encoding="utf-8") as input_csv:
         reader = csv.DictReader(input_csv)
         for row in reader:
-            id = row["doc"]  # set id as the document itself, not important
+            id = row["doc"]
+            start_id = id.find("Title: ") + len("Title: ")
+            id = id[start_id:]
+            end_id = id.find("\n")
+            id = id[:end_id]
+            doc = row["doc"]
+            embedding = ast.literal_eval(row["embedding"])
             year = int(row["year"])
 
             ids.append(id)
-            batch.append(row["doc"])
-            embeddings.append(ast.literal_eval(row["embedding"]))
+            batch.append(doc)
+            embeddings.append(embedding)
             metadatas.append({"year": year})
 
             if len(batch) >= batch_size:
