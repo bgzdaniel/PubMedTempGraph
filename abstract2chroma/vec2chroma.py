@@ -67,22 +67,44 @@ def upsert(collection, ids, documents, embeddings, metadatas):
 
 
 start_insertion = time()
-for year in tqdm(years):
+for year in years:
+    print(f"inserting docs for year {year} ...")
     with open(f"data/embeddings/embeddings_{year}.csv", encoding="utf-8") as input_csv:
         reader = csv.DictReader(input_csv)
+        reader_len = 0
         for row in reader:
-            id = row["doc"]
-            doc = row["doc"]
-            embedding = ast.literal_eval(row["embedding"])
-            year = int(row["year"])
+            reader_len += 1
+        input_csv.seek(0)
+        next(reader)
+        with tqdm(total=reader_len) as pbar:
+            for row in reader:
+                id = row["doc"]
+                doc = row["doc"]
+                embedding = ast.literal_eval(row["embedding"])
+                year = int(row["year"])
 
-            ids.append(id)
-            documents.append(doc)
-            embeddings.append(embedding)
-            metadatas.append({"year": year})
+                ids.append(id)
+                documents.append(doc)
+                embeddings.append(embedding)
+                metadatas.append({"year": year})
 
-            if len(documents) >= batch_size:
-                start = time()
+                if len(documents) >= batch_size:
+                    start = time()
+                    upsert(
+                        collection=collection,
+                        ids=ids,
+                        documents=documents,
+                        embeddings=embeddings,
+                        metadatas=metadatas,
+                    )
+                    pbar.update(len(documents))
+                    inserted_rows += len(documents)
+                    documents = []
+                    ids = []
+                    embeddings = []
+                    metadatas = []
+
+            if documents:
                 upsert(
                     collection=collection,
                     ids=ids,
@@ -90,25 +112,12 @@ for year in tqdm(years):
                     embeddings=embeddings,
                     metadatas=metadatas,
                 )
+                pbar.update(len(documents))
                 inserted_rows += len(documents)
                 documents = []
                 ids = []
                 embeddings = []
                 metadatas = []
-
-        if documents:
-            upsert(
-                collection=collection,
-                ids=ids,
-                documents=documents,
-                embeddings=embeddings,
-                metadatas=metadatas,
-            )
-            inserted_rows += len(documents)
-            documents = []
-            ids = []
-            embeddings = []
-            metadatas = []
 
 end_insertion = time()
 
