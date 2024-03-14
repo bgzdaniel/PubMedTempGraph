@@ -12,7 +12,6 @@ def main():
         # ...
     }
     vectordb, chains = init(device)
-    tf.config.set_visible_devices([], 'GPU') # run BleuRT on CPU, save GPU memory
     scorer = Scorer(device=device)
     eval(vectordb, chains, params, scorer)
 
@@ -33,8 +32,8 @@ def eval(vectordb: Chroma, chains, params, scorer: Scorer):
             question = qa["generated_question"]
             gold_answer = qa["generated_answer"]
             gpt_answer = qa["gpt_answer_without_context"]
-            print(f"question: {question}")
-            predicted_answer = get_answer(question, "research", vectordb, chains, params)
+            print(f"\nquestion: {question}")
+            predicted_answer = get_answer(question, "research", vectordb, chains, params, True)
 
             question_types_scores[question_type] = scorer.get_scores(
                 predictions=[predicted_answer], references=[gold_answer]

@@ -72,7 +72,8 @@ def get_answer(
         mode: str,
         vectordb: Chroma,
         chains: dict[str, LLMChain],
-        params: dict[str, Any]
+        params: dict[str, Any],
+        eval_mode: bool = False,
     ) -> str:
     stdout = StdoutSwitch()
 
@@ -111,7 +112,9 @@ def get_answer(
     
     answer = []
     for filter in filters:
-        docs = vectordb.similarity_search(question, k=params["top_k"], filter=filter)
+        if eval_mode: # remove overhead, as chroma only includes latest research for eval
+            filter = None
+        docs = vectordb.max_marginal_relevance_search(question, k=params["top_k"], filter=filter)
         docs = [doc.page_content for doc in docs]
         context = "\n\n".join(docs)
         if mode == "overview":
