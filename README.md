@@ -115,16 +115,17 @@ Note: Running the system for the first time might take some additional seconds b
 ### Optional usage possibilities 
 
 1. **Embedding of abstracts or paragraphs:**
-   - For embedding abstracts the file `extract_data.csv` is required. Place it in `TODO Location`. See [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) for the data. Go to `TODO location`.
+   - For embedding abstracts files like `studies_{year}.csv` are required. Place them in `data/studies`. See [here](https://drive.google.com/drive/folders/139ZXhBJ3WVpzhiY7fzl9K2mx84VmKXmB?usp=sharing) for the data. For example for the file `studies_2019.csv` the following command needs to be executed:
    ```bash
-   TODO run Embedding generation
+   python -m abstract2chroma.abstract2vec --year "2019"
    ```
    
 2. **Loading embeddings to the vector database ChromaDB:**
-   - For loading abstract-based embeddings to the vector database, the file `abstract_metadata_embeddings.csv` is required. Place it in `TODO location`. See [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) for the data. Go to `TODO Location.
+   - For loading abstract-based embeddings to the vector database, the files of type `embeddings_{year}.csv` are required. Place it in `data/embeddings`. Create them with the step **Embedding of abstracts or paragraphs**. For example for the files `embeddings_2019.csv` and `embeddings_2020.csv` the following command needs to be executed:
    ```bash
-   TODO upload command
+   python -m abstract2chroma.vec2chroma --years "2019,2020" --create_new
    ```
+   The argument `--create_new` instructs the script to delete an existing database and create a new one. If a database already exists at `data/chroma_store`, then leave the argument parameter out of the execution command.
    
 5. **Running Validation and Evaluation:**
    - For the evaluation, BleuRT is required. First clone bleuRT:
@@ -150,15 +151,9 @@ Note: Running the system for the first time might take some additional seconds b
    pip install . 
    ```
 
-   The used BleuRT model can be found [here](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20-D12.zip). Place it under `TODO input path`.
+   The used BleuRT model can be found [here](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20-D12.zip). Place it under `data/BLEURT-20-D12`.
    
-   - Download the abstract based ChromaDB store (folder called `chroma_store_abstracts`) from [here](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG). 
-   Go to `TODO location evaluation script`.
-   - Download the evaluation dataset [here](https://docs.google.com/spreadsheets/d/1XNnEeRMMBvswtjh8lZZqHDCwwQEAvt7tEV8BbQ4CK60/edit?usp=sharing)
-
+   For evaluation the steps **Embedding of abstracts or paragraphs** and **Loading embeddings to the vector database ChromaDB** have to be completed. Run the evaluation with the following command:
    ```bash
-   python TODO run evaluation
+   python -m eval
    ```
-
-## Project Structure
-TODO: insert final project structure. 
