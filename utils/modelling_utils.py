@@ -111,7 +111,7 @@ def get_answer(
     
     answer = []
     for filter in filters:
-        docs = vectordb.max_marginal_relevance_search(question, k=params["top_k"], filter=filter)
+        docs = vectordb.similarity_search(question, k=params["top_k"], filter=filter)
         docs = [doc.page_content for doc in docs]
         context = "\n\n".join(docs)
         if mode == "overview":
@@ -123,13 +123,10 @@ def get_answer(
             stdout.on()
             print(answer[-1])
         elif mode == "research":
-            stdout.off()
             answer.append(research_chain.invoke({
                 "context": context,
                 "question": question,
             })["text"].strip())
-            stdout.on()
-            print(answer[-1])
     return "\n".join(answer)
 
 def spellcheck_question(question: str) -> str:

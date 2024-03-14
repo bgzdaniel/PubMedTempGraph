@@ -6,7 +6,7 @@ import tensorflow as tf
 import pandas as pd
 
 def main():
-    device = torch.device('cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     params = {
         "top_k": 3,
         # ...
@@ -17,7 +17,7 @@ def main():
     eval(vectordb, chains, params, scorer)
 
 def eval(vectordb: Chroma, chains, params, scorer: Scorer):
-    df = pd.read_csv("eval_questions_handmade.csv").fillna("")
+    df = pd.read_csv("data/eval_dataset.csv").fillna("")
     types = df["question_type"].unique()
     question_type_set = {}
     for a_type in types:
@@ -33,7 +33,7 @@ def eval(vectordb: Chroma, chains, params, scorer: Scorer):
             question = qa["generated_question"]
             gold_answer = qa["generated_answer"]
             gpt_answer = qa["gpt_answer_without_context"]
-
+            print(f"question: {question}")
             predicted_answer = get_answer(question, "research", vectordb, chains, params)
 
             question_types_scores[question_type] = scorer.get_scores(
