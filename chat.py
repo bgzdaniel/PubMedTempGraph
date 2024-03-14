@@ -11,9 +11,8 @@ def main():
     chat(vectordb, chains, params)
 
 def chat(vectordb, chains, params):
-    print("print user information") # TODO: add user information
     while True:
-        question = input("Your question: ")
+        question = input("Please enter your question: ")
         if question == "exit":
             break
         question = spellcheck_question(question)

@@ -15,14 +15,14 @@ This project utilizes a combination of Langchain, ChromaDB, and llama.cpp to bui
 
 - **ChromaDB:** Chroma DB is an open-source vector storage system designed for efficiently storing and retrieving vector embeddings.
 
-- **llama2.cpp:** llama2.cpp implements Meta's LLaMa2 architecture in efficient C/C++ to enable a fast local runtime.
+- **llama.cpp:** llama.cpp implements Meta's LLaMa2 architecture in efficient C/C++ to enable a fast local runtime.
 
 ## Installation & set-up
 
 1. **Prerequisites:**
    - Ensure you have Python installed on your system. Your Python version should match 3.10.
    - Ensure to have conda installed on your system.
-   - Create a folder where you want to store the project. Call it e.g. pupMedTempGraph
+   - Create a folder where you want to store the project.
 
 2. **Create a Conda Environment:**
    - Create a conda environment
@@ -34,7 +34,7 @@ This project utilizes a combination of Langchain, ChromaDB, and llama.cpp to bui
 
 4. **Clone the Repository into your working directory:**
    ```bash
-   git clone https://github.com/KennyLoRI/pubMedNLP.git
+   git clone git@github.com:bgzdaniel/PubMedTempGraph.git
    ```
    When using Mac set pgk_config path:
    ```bash
@@ -43,7 +43,7 @@ This project utilizes a combination of Langchain, ChromaDB, and llama.cpp to bui
 
    then switch to the working directory of the project:
    ```bash
-   cd pupMedTempGraph
+   cd PubMedTempGraph
    ```
    
 6. **Install Dependencies:**
@@ -69,29 +69,29 @@ This project utilizes a combination of Langchain, ChromaDB, and llama.cpp to bui
 If anything goes wrong in this step, please contact [Daniel Bogacz](mailto:daniel.bogacz@stud.uni-heidelberg.de) for **Linux** installation issues and [Kenneth Styppa](mailto:kenneth.styppa@web.de) for **MacOS** installation issues. Also refer to the installation guide provided [here](https://python.langchain.com/docs/integrations/llms/llamacpp) and also [here](https://llama-cpp-python.readthedocs.io/en/latest/install/macos/)
 
 6. **Download chroma store and model files and place them into the right location:**
-   - Go to [this](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) Google drive link and download the ChromaDB store (folder called `chroma_store_abstracts`) as well as the llama2.cpp [model files](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q6_K.gguf).
-   - Insert the ChromaDB store at `TODO: location`
-   - Insert the model file into `TODO: location` and keep the name
+   - Go to [this](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) Google drive link and download the ChromaDB store (folder called `chroma_store_abstracts`) as well as the [model files](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q6_K.gguf).
+   - Insert the ChromaDB store at `data/chroma_store`
+   - Insert the model file at `data/mistral-7b-instruct-v0.2.Q6_K`
 
 ## Usage
 ### Using the Q&A system
-1. **Navigate to the `TODO: insert folder name` folder folder in your terminal:**
+1. **Navigate to the main folder `PubMedTempGraph` in your terminal:**
    ```bash
-   cd TODO location
+   cd PubMedTempGraph
    ```
 
 2. **Activate the Q&A System:**
    ```bash
-   TODO run
+   python -m chat
    ```
 3. **Interact with the system:**
    - Ask your question
    ```bash
-   Please enter your question (use *word* for abbreviations or special terms): [your_question]
+   Please enter your question: [your_question]
    ```
    - Ask another question (and so on)
   
-Note: Running the system for the first time might take some additional seconds because the model has to be initialized. All questions, following the first one should be answered within a few seconds. If an answer takes more than 30 seconds to be completed, your GPU might not be automatically detected. You can check that by setting verbose = True in the parameters.yml file and then taking a look at the model initialization output. If it prints OPEN_BLAS = 1 somewhere, your GPU is automatically detected and it should be fine. If not please reach out to us in person via the emails provided in the documentation. 
+Note: Running the system for the first time might take some additional seconds because the model and the vector database has to be initialized.
   
 ### Trouble-shooting: 
 - If you encounter an issue during your usage install pyspellchecker separately and try again:
