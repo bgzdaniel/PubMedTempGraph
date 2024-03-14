@@ -1,4 +1,5 @@
 import chromadb
+import uuid
 import csv
 import ast
 from time import time
@@ -30,6 +31,7 @@ else:
         name="pubmed_embeddings",
         embedding_function=None,
     )
+    collection.get()
 
 duplicate_docs = 0
 ids = []
@@ -50,8 +52,7 @@ def upsert_with_duplicates(collection, ids, documents, embeddings, metadatas):
                 metadatas=[metadata],
             )
         except chromadb.errors.DuplicateIDError:
-            duplicate_docs += 1
-            continue
+            id = uuid.uuid4()
 
 
 def upsert(collection, ids, documents, embeddings, metadatas):
@@ -78,7 +79,7 @@ for year in years:
         next(reader)
         with tqdm(total=reader_len) as pbar:
             for row in reader:
-                id = row["doc"]
+                id = uuid.uuid4()
                 doc = row["doc"]
                 embedding = ast.literal_eval(row["embedding"])
                 year = int(row["year"])
