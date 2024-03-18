@@ -31,14 +31,10 @@ class PubMedEmbeddingFunction(chromadb.EmbeddingFunction):
         return self.model.encode(query)
 
 
-def get_langchain_chroma(device, persist_dir="../chroma_store"):
-    model = PubMedBert(device=device)
-    embed_fn = PubMedEmbeddingFunction(model=model)
-    client = chromadb.PersistentClient(path=persist_dir)
-    langchain_chroma = Chroma(
-        client=client,
+def get_langchain_chroma(model, persist_dir="../chroma_store") -> Chroma:
+    return Chroma(
+        client=chromadb.PersistentClient(path=persist_dir),
         collection_name="pubmed_embeddings",
-        embedding_function=embed_fn,
+        embedding_function=PubMedEmbeddingFunction(model=model),
         collection_metadata={"hnsw:space": "cosine"},
     )
-    return langchain_chroma

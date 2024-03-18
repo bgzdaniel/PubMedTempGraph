@@ -1,7 +1,7 @@
 .idea
 __pycache__
 *.csv
-chroma_store
+chroma_store*
 mistral-7b-instruct-*.gguf
 BLEURT-*
 .venv

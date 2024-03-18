@@ -69,9 +69,8 @@ This project utilizes a combination of Langchain, ChromaDB, and llama.cpp to bui
 If anything goes wrong in this step, please contact [Daniel Bogacz](mailto:daniel.bogacz@stud.uni-heidelberg.de) for **Linux** installation issues and [Kenneth Styppa](mailto:kenneth.styppa@web.de) for **MacOS** installation issues. Also refer to the installation guide provided [here](https://python.langchain.com/docs/integrations/llms/llamacpp) and also [here](https://llama-cpp-python.readthedocs.io/en/latest/install/macos/)
 
 6. **Download chroma store and model files and place them into the right location:**
-   - Go to [this](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) Google drive link and download the ChromaDB store (folder called `chroma_store_abstracts`) as well as the [model files](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q6_K.gguf).
-   - Insert the ChromaDB store at `data/chroma_store`
-   - Insert the model file at `data/mistral-7b-instruct-v0.2.Q6_K`
+   -  Download the [model file](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q6_K.gguf). Insert the model file at `data/mistral-7b-instruct-v0.2.Q6_K`.
+   - For a complete setup, a vector store is necessary. One can create his own store with the step **Embedding of abstracts** and **Loading embeddings to the vector database ChromaDB** in the section **More Usage Possibilities**. For a minimal setup go to [this](https://drive.google.com/drive/folders/1-6FxGDDKGD-sMwT2Pax7VVMLzuZUH0DG) google drive link and download the ChromaDB store (folder called `chroma_store_abstracts`). Insert the ChromaDB store at `data/chroma_store`.
 
 ## Usage
 ### Using the Q&A system
@@ -112,20 +111,27 @@ Note: Running the system for the first time might take some additional seconds b
    ```
    Also make sure that CMake is installed on your system.
 
-### Optional usage possibilities 
+### More Usage Possibilities: 
 
-1. **Embedding of abstracts or paragraphs:**
+1. **Embedding of abstracts:**
    - For embedding abstracts files like `studies_{year}.csv` are required. Place them in `data/studies`. See [here](https://drive.google.com/drive/folders/139ZXhBJ3WVpzhiY7fzl9K2mx84VmKXmB?usp=sharing) for the data. For example for the file `studies_2019.csv` the following command needs to be executed:
    ```bash
    python -m abstract2chroma.abstract2vec --year "2019"
    ```
    
 2. **Loading embeddings to the vector database ChromaDB:**
-   - For loading abstract-based embeddings to the vector database, the files of type `embeddings_{year}.csv` are required. Place it in `data/embeddings`. Create them with the step **Embedding of abstracts or paragraphs**. For example for the files `embeddings_2019.csv` and `embeddings_2020.csv` the following command needs to be executed:
+   - For loading abstract-based embeddings to the vector database, the files of type `embeddings_{year}.csv` are required.
+   - Place it in `data/embeddings`.
+   - Create them with the step **Embedding of abstracts**. 
+   - For the 'research' mode: Multiple embedding files need to be stored in one chroma store. For example for the files `embeddings_2019.csv` and `embeddings_2020.csv` the following command needs to be executed:
    ```bash
    python -m abstract2chroma.vec2chroma --years "2019,2020" --create_new
    ```
-   The argument `--create_new` instructs the script to delete an existing database and create a new one. If a database already exists at `data/chroma_store`, then leave the argument parameter out of the execution command.
+   - For the 'overview' mode: Multiple embedding files are needed to create multiple chroma stores for efficiency reasons. For example for the files `embeddings_2019.csv` and `embeddings_2020.csv` the following command needs to be executed:
+   ```bash
+   python -m abstract2chroma.vec2chroma_year --years "2019,2020" --create_new
+   ```
+   - The argument `--create_new` instructs the script to delete an existing database and create a new one. If a database already exists at `data/chroma_store`, then leave the argument parameter out of the execution command.
    
 5. **Running Validation and Evaluation:**
    - For the evaluation, BleuRT is required. First clone bleuRT:

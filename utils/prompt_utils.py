@@ -22,10 +22,10 @@ def get_text2date_prompt():
     Input: 'Who won the worldcup in 2012?'
     Output: [2012]
     
-    Input: 'What research was published on Covid after 2018 but before 2023?'
+    Input: 'What research was published on Covid-19 after 2018 but before 2023?'
     Output: [2019, 2020, 2021, 2022]
 
-    Input: 'What research was published on Covid since 2018?'
+    Input: 'What research was published on Covid-19 since 2018?'
     Output: [2018, 2019, 2020, 2021, 2022, 2023, 2024]
     
     Input: 'Examine breakthroughs in medical research between 2010 and 2015.'
@@ -45,19 +45,18 @@ def get_text2date_prompt():
 def get_overview_prompt():
     prompt = """
     Consider the following published papers from PubMed: {context} 
-    
-    All papers are from the same year.
-    Summarize the content of these papers.
-    With your summary be concise with one or two sentences.
-    Do NOT mention the papers in your summary.
 
-    Start your summary with the year of the provided papers and a colon,
-    for example '2018: ".
+    Summarize the content of these papers. 
+    With your summary be concise with one or two sentences. 
+    The summary should be done in view of the user question which is the following:
+    '{question}'
 
-    When doing the summary also consider the question '{question}'.
-    The mentioned years in the question are irrelevant.
-    Try to phrase you summary in a way that answers the provided question.
-    Remember to NOT consider the mentioned years in the question.
+    Most importantly is a general summary but also try to answer the user question. 
+    Ignore the specified years in the user question. 
+    Do NOT mention that your information in your summary is from the papers! 
+    Do NOT use any newlines in your summary, just use flowing text! 
+    Do NOT mention any years in your summary!
+    Remember to be concise with only one or two sentences! 
 
     Your summary: """
     return prompt

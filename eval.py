@@ -1,8 +1,7 @@
 import torch
-from utils.modelling_utils import init, get_answer
+from utils.modelling_utils import init_chains, get_answer
 from utils.eval_utils import Scorer, weighted_score, get_overall_scores, output_scores
-from langchain_community.vectorstores.chroma import Chroma
-import tensorflow as tf
+from utils.embedding_utils import PubMedBert
 import pandas as pd
 
 def main():
@@ -11,11 +10,13 @@ def main():
         "top_k": 3,
         # ...
     }
-    vectordb, chains = init(device)
+    chains = init_chains()
+    embedding_model = PubMedBert(device=device)
     scorer = Scorer(device=device)
-    eval(vectordb, chains, params, scorer)
+    eval(chains, embedding_model, params, scorer)
 
-def eval(vectordb: Chroma, chains, params, scorer: Scorer):
+def eval(chains, embedding_model, params, scorer: Scorer):
+    
     df = pd.read_csv("data/eval_dataset.csv").fillna("")
     types = df["question_type"].unique()
     question_type_set = {}
@@ -33,7 +34,7 @@ def eval(vectordb: Chroma, chains, params, scorer: Scorer):
             gold_answer = qa["generated_answer"]
             gpt_answer = qa["gpt_answer_without_context"]
             print(f"\nquestion: {question}")
-            predicted_answer = get_answer(question, "research", vectordb, chains, params, True)
+            predicted_answer = get_answer(question, "research", chains, embedding_model, params)
 
             question_types_scores[question_type] = scorer.get_scores(
                 predictions=[predicted_answer], references=[gold_answer]
