@@ -56,7 +56,7 @@ def get_overview_prompt():
     Do NOT mention that your information in your summary is from the papers! 
     Do NOT use any newlines in your summary, just use flowing text! 
     Do NOT mention any years in your summary!
-    Remember to be concise with only one or two sentences! 
+    Remember your summary to be concise with only one or two sentences! 
 
     Your summary: """
     return prompt
