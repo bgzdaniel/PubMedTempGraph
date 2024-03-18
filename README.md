@@ -158,8 +158,14 @@ Note: Running the system for the first time might take some additional seconds b
    ```
 
    The used BleuRT model can be found [here](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20-D12.zip). Place it under `data/BLEURT-20-D12`.
-   
+
    For evaluation the steps **Embedding of abstracts or paragraphs** and **Loading embeddings to the vector database ChromaDB** have to be completed. Run the evaluation with the following command:
    ```bash
    python -m eval
    ```
+
+   ## Acknowledgements
+   We thank Prof. Herweg for his engaging course in "Event Processing" and the freedom to pursue this project.
+
+   ## Disclaimer
+   We confirm that we did this project on our own and only with the tools and means mentioned in the technical report submitted with this repository.
